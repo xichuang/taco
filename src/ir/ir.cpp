@@ -105,7 +105,7 @@ Expr Literal::zero(Datatype datatype) {
       zero = Literal::make(std::complex<double>(0));
       break;
       case Datatype::DDComplex:
-          zero = Literal::make(std::complex<ddreal>(ddreal("0")));
+          zero = Literal::make(std::complex<ddreal>(ddreal("0.0"),ddreal("0.0")));
           break;
     case Datatype::Undefined:
       taco_ierror;

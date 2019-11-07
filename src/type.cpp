@@ -114,9 +114,9 @@ std::ostream& operator<<(std::ostream& os, const Datatype& type) {
   else if (type == Datatype::Float64) os << "double";
   else if (type == Datatype::DDReal) os << ddstr;
 
-  else if (type == Datatype::Complex64) os << "float complex";
-  else if (type == Datatype::Complex128) os << "double complex";
-  else if (type == Datatype::DDComplex) os << ddstr+" complex";
+  else if (type == Datatype::Complex64) os << "std::complex<float>";
+  else if (type == Datatype::Complex128) os << "std::complex<double>";
+  else if (type == Datatype::DDComplex) os << "std::complex<"+ddstr+">";
 
   else os << "Undefined";
   return os;
