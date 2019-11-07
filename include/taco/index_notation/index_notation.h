@@ -264,13 +264,11 @@ public:
   Literal(int8_t);
   Literal(float);
   Literal(double);
-    Literal(dd_real);
-    Literal(qd_real);
+    Literal(ddreal);
 
   Literal(std::complex<float>);
   Literal(std::complex<double>);
-    Literal(std::complex<dd_real>);
-    Literal(std::complex<qd_real>);
+    Literal(std::complex<ddreal>);
 
   static IndexExpr zero(Datatype);
 

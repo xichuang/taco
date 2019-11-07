@@ -42,9 +42,7 @@ Expr::Expr(float n) : IRHandle(Literal::make(n)) {
 
 Expr::Expr(double n) : IRHandle(Literal::make(n)) {
 }
-Expr::Expr(dd_real n) : IRHandle(Literal::make(n)) {
-}
-Expr::Expr(qd_real n) : IRHandle(Literal::make(n)) {
+Expr::Expr(ddreal n) : IRHandle(Literal::make(n)) {
 }
 
 Expr::Expr(std::complex<float> n) : IRHandle(Literal::make(n)) {
@@ -52,9 +50,7 @@ Expr::Expr(std::complex<float> n) : IRHandle(Literal::make(n)) {
 
 Expr::Expr(std::complex<double> n) : IRHandle(Literal::make(n)) {
 }
-Expr::Expr(std::complex<dd_real> n) : IRHandle(Literal::make(n)) {
-}
-Expr::Expr(std::complex<qd_real> n) : IRHandle(Literal::make(n)) {
+Expr::Expr(std::complex<ddreal> n) : IRHandle(Literal::make(n)) {
 }
 
 Expr Literal::zero(Datatype datatype) {
@@ -99,11 +95,8 @@ Expr Literal::zero(Datatype datatype) {
     case Datatype::Float64:
       zero = Literal::make((double)0.0);
       break;
-      case Datatype::Float128:
-          zero = Literal::make((dd_real)0);
-          break;
-      case Datatype::Float256:
-          zero = Literal::make((qd_real)0);
+      case Datatype::DDReal:
+          zero = Literal::make( ddreal("0"));
           break;
     case Datatype::Complex64:
       zero = Literal::make(std::complex<float>(0));
@@ -111,11 +104,8 @@ Expr Literal::zero(Datatype datatype) {
     case Datatype::Complex128:
       zero = Literal::make(std::complex<double>(0));
       break;
-      case Datatype::Complex256:
-          zero = Literal::make(std::complex<dd_real>(0));
-          break;
-      case Datatype::Complex512:
-          zero = Literal::make(std::complex<qd_real>(0));
+      case Datatype::DDComplex:
+          zero = Literal::make(std::complex<ddreal>(ddreal("0")));
           break;
     case Datatype::Undefined:
       taco_ierror;
@@ -174,7 +164,7 @@ uint64_t Literal::getUIntValue() const {
   return 0ull;
 }
 
-qd_real Literal::getFloatValue() const {
+ddreal Literal::getFloatValue() const {
   taco_iassert(type.isFloat()) << "Type must be floating point";
   switch (type.getKind()) {
     case Datatype::Float32:
@@ -182,33 +172,29 @@ qd_real Literal::getFloatValue() const {
       return getValue<float>();
     case Datatype::Float64:
       return getValue<double>();
-      case Datatype::Float128:
-          return getValue<dd_real>();
-      case Datatype::Float256:
-          return getValue<qd_real>();
+      case Datatype::DDReal:
+          return getValue<ddreal>();
     default:
       break;
   }
   taco_ierror << "not a floating point type";
-  return qd_real(0);
+  return ddreal(0);
 }
 
-std::complex<qd_real> Literal::getComplexValue() const {
+std::complex<ddreal> Literal::getComplexValue() const {
   taco_iassert(type.isComplex()) << "Type must be a complex number";
   switch (type.getKind()) {
     case Datatype::Complex64:
       return getValue<std::complex<float>>();
     case Datatype::Complex128:
       return getValue<std::complex<double>>();
-      case Datatype::Complex256:
-          return getValue<std::complex<dd_real>>();
-      case Datatype::Complex512:
-          return getValue<std::complex<qd_real>>();
+      case Datatype::DDComplex:
+          return getValue<std::complex<ddreal>>();
     default:
       break;
   }
   taco_ierror << "not a floating point type";
-  return std::complex<qd_real>{0};
+  return std::complex<ddreal>{0};
 }
 
 template <typename T> bool compare(const Literal* literal, double val) {
@@ -256,11 +242,8 @@ bool Literal::equalsScalar(double scalar) const {
     case Datatype::Float64:
       return compare<double>(this, scalar);
     break;
-      case Datatype::Float128:
-          return compare<dd_real>(this, scalar);
-          break;
-      case Datatype::Float256:
-          return compare<qd_real>(this, scalar);
+      case Datatype::DDReal:
+          return compare<ddreal>(this, scalar);
           break;
     case Datatype::Complex64:
       return compare<std::complex<float>>(this, scalar);
@@ -268,11 +251,8 @@ bool Literal::equalsScalar(double scalar) const {
     case Datatype::Complex128:
       return compare<std::complex<double>>(this, scalar);
     break;
-      case Datatype::Complex256:
-          return compare<std::complex<dd_real>>(this, scalar);
-          break;
-      case Datatype::Complex512:
-          return compare<std::complex<qd_real>>(this, scalar);
+      case Datatype::DDComplex:
+          return compare<std::complex<ddreal>>(this, scalar);
           break;
     case Datatype::Undefined:
       taco_not_supported_yet;

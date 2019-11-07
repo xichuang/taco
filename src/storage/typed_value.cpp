@@ -25,13 +25,10 @@ size_t TypedComponent::getAsIndex(const ComponentTypeUnion mem) const {
     case Datatype::Int128: return (size_t) mem.int128Value;
     case Datatype::Float32: return (size_t) mem.float32Value;
     case Datatype::Float64: return (size_t) mem.float64Value;
-      case Datatype::Float128: taco_ierror; return 0;
-      case Datatype::Float256: taco_ierror; return 0;
-
+      case Datatype::DDReal: taco_ierror; return 0;
       case Datatype::Complex64: taco_ierror; return 0;
     case Datatype::Complex128: taco_ierror; return 0;
-      case Datatype::Complex256: taco_ierror; return 0;
-      case Datatype::Complex512: taco_ierror; return 0;
+      case Datatype::DDComplex: taco_ierror; return 0;
       case Datatype::Undefined: taco_ierror; return 0;
   }
   taco_unreachable;
@@ -53,13 +50,11 @@ void TypedComponent::set(ComponentTypeUnion& mem, const ComponentTypeUnion& valu
     case Datatype::Int128: mem.int128Value = value.int128Value; break;
     case Datatype::Float32: mem.float32Value = value.float32Value; break;
     case Datatype::Float64: mem.float64Value = value.float64Value; break;
-      case Datatype::Float128: mem.float128Value = value.float128Value; break;
-      case Datatype::Float256: mem.float256Value = value.float256Value; break;
+      case Datatype::DDReal: mem.ddrealValue = value.ddrealValue; break;
 
       case Datatype::Complex64:  mem.complex64Value = value.complex64Value;; break;
     case Datatype::Complex128:  mem.complex128Value = value.complex128Value;; break;
-      case Datatype::Complex256:  mem.complex256Value = value.complex256Value;; break;
-      case Datatype::Complex512:  mem.complex512Value = value.complex512Value;; break;
+      case Datatype::DDComplex:  mem.ddcomplexValue = value.ddcomplexValue;; break;
 
       case Datatype::Undefined: taco_ierror; break;
   }
@@ -80,13 +75,11 @@ void TypedComponent::setInt(ComponentTypeUnion& mem, const int value) {
     case Datatype::Int128: mem.int128Value = value; break;
     case Datatype::Float32: mem.float32Value = value; break;
     case Datatype::Float64: mem.float64Value = value; break;
-      case Datatype::Float128: mem.float128Value = dd_real(value); break;
-      case Datatype::Float256: mem.float256Value = qd_real(value); break;
+      case Datatype::DDReal: mem.ddrealValue = ddreal(value); break;
 
       case Datatype::Complex64:  mem.complex64Value = value; break;
     case Datatype::Complex128:  mem.complex128Value = value; break;
-    case Datatype::Complex256:  mem.complex256Value = std::complex<dd_real>(value); break;
-      case Datatype::Complex512:  mem.complex512Value = std::complex<qd_real>(value); break;
+    case Datatype::DDComplex:  mem.ddcomplexValue = std::complex<ddreal>(value); break;
 
       case Datatype::Undefined: taco_ierror; break;
   }
@@ -107,13 +100,11 @@ void TypedComponent::add(ComponentTypeUnion& result, const ComponentTypeUnion& a
     case Datatype::Int128: result.int128Value  = a.int128Value + b.int128Value; break;
     case Datatype::Float32: result.float32Value  = a.float32Value + b.float32Value; break;
     case Datatype::Float64: result.float64Value  = a.float64Value + b.float64Value; break;
-      case Datatype::Float128: result.float128Value  = a.float128Value + b.float128Value; break;
-      case Datatype::Float256: result.float256Value  = a.float256Value + b.float256Value; break;
+      case Datatype::DDReal: result.ddrealValue  = a.ddrealValue + b.ddrealValue; break;
 
       case Datatype::Complex64: result.complex64Value  = a.complex64Value + b.complex64Value; break;
     case Datatype::Complex128: result.complex128Value  = a.complex128Value + b.complex128Value; break;
-      case Datatype::Complex256: result.complex256Value  = a.complex256Value + b.complex256Value; break;
-      case Datatype::Complex512: result.complex512Value  = a.complex512Value + b.complex512Value; break;
+      case Datatype::DDComplex: result.ddcomplexValue  = a.ddcomplexValue + b.ddcomplexValue; break;
 
       case Datatype::Undefined: taco_ierror; break;
   }
@@ -134,13 +125,11 @@ void TypedComponent::addInt(ComponentTypeUnion& result, const ComponentTypeUnion
     case Datatype::Int128: result.int128Value  = a.int128Value + b; break;
     case Datatype::Float32: result.float32Value  = a.float32Value + b; break;
     case Datatype::Float64: result.float64Value  = a.float64Value + b; break;
-      case Datatype::Float128: result.float128Value  = a.float128Value + dd_real(b); break;
-      case Datatype::Float256: result.float256Value  = a.float256Value + qd_real(b); break;
+      case Datatype::DDReal: result.ddrealValue  = a.ddrealValue + ddreal(b); break;
 
       case Datatype::Complex64: result.complex64Value  = a.complex64Value + std::complex<float>(b, 0); break;
     case Datatype::Complex128: result.complex128Value  = a.complex128Value + std::complex<double>(b, 0); break;
-      case Datatype::Complex256: result.complex256Value  = a.complex256Value + std::complex<dd_real>(b, 0); break;
-      case Datatype::Complex512: result.complex512Value  = a.complex512Value + std::complex<qd_real>(b, 0); break;
+      case Datatype::DDComplex: result.ddcomplexValue  = a.ddcomplexValue + std::complex<ddreal>(b, 0); break;
 
       case Datatype::Undefined: taco_ierror; break;
   }
@@ -163,13 +152,11 @@ void TypedComponent::negate(ComponentTypeUnion& result, const ComponentTypeUnion
     case Datatype::Int128: result.int128Value  = -a.int128Value; break;
     case Datatype::Float32: result.float32Value  = -a.float32Value; break;
     case Datatype::Float64: result.float64Value  = -a.float64Value; break;
-      case Datatype::Float128: result.float128Value  = -a.float128Value; break;
-      case Datatype::Float256: result.float256Value  = -a.float256Value; break;
+      case Datatype::DDReal: result.ddrealValue  = -a.ddrealValue; break;
 
       case Datatype::Complex64: result.complex64Value  = -a.complex64Value; break;
     case Datatype::Complex128: result.complex128Value  = -a.complex128Value; break;
-      case Datatype::Complex256: result.complex256Value  = -a.complex256Value; break;
-      case Datatype::Complex512: result.complex512Value  = -a.complex512Value; break;
+      case Datatype::DDComplex: result.ddcomplexValue  = -a.ddcomplexValue; break;
 
       case Datatype::Undefined: taco_ierror; break;
   }
@@ -190,13 +177,11 @@ void TypedComponent::multiply(ComponentTypeUnion& result, const ComponentTypeUni
     case Datatype::Int128: result.int128Value  = a.int128Value * b.int128Value; break;
     case Datatype::Float32: result.float32Value  = a.float32Value * b.float32Value; break;
     case Datatype::Float64: result.float64Value  = a.float64Value * b.float64Value; break;
-      case Datatype::Float128: result.float128Value  = a.float128Value * b.float128Value; break;
-      case Datatype::Float256: result.float256Value  = a.float256Value * b.float256Value; break;
+      case Datatype::DDReal: result.ddrealValue  = a.ddrealValue * b.ddrealValue; break;
 
       case Datatype::Complex64: result.complex64Value  = a.complex64Value * b.complex64Value; break;
     case Datatype::Complex128: result.complex128Value  = a.complex128Value * b.complex128Value; break;
-      case Datatype::Complex256: result.complex256Value  = a.complex256Value * b.complex256Value; break;
-      case Datatype::Complex512: result.complex512Value  = a.complex512Value * b.complex512Value; break;
+      case Datatype::DDComplex: result.ddcomplexValue  = a.ddcomplexValue * b.ddcomplexValue; break;
 
       case Datatype::Undefined: taco_ierror; break;
   }
@@ -217,13 +202,11 @@ void TypedComponent::multiplyInt(ComponentTypeUnion& result, const ComponentType
     case Datatype::Int128: result.int128Value  = a.int128Value * b; break;
     case Datatype::Float32: result.float32Value  = a.float32Value * b; break;
     case Datatype::Float64: result.float64Value  = a.float64Value * b; break;
-      case Datatype::Float128: result.float128Value  = a.float128Value * dd_real(b); break;
-      case Datatype::Float256: result.float256Value  = a.float256Value * qd_real(b); break;
+      case Datatype::DDReal: result.ddrealValue  = a.ddrealValue * ddreal(b); break;
 
       case Datatype::Complex64: result.complex64Value  = a.complex64Value * std::complex<float>(b, 0); break;
     case Datatype::Complex128: result.complex128Value  = a.complex128Value * std::complex<double>(b, 0); break;
-      case Datatype::Complex256: result.complex256Value  = a.complex256Value * std::complex<dd_real>(b, 0); break;
-      case Datatype::Complex512: result.complex512Value  = a.complex512Value * std::complex<qd_real>(b, 0); break;
+      case Datatype::DDComplex: result.ddcomplexValue  = a.ddcomplexValue * std::complex<ddreal>(b, 0); break;
 
       case Datatype::Undefined: taco_ierror; break;
   }
@@ -514,12 +497,10 @@ bool operator>(const TypedComponentVal& a, const TypedComponentVal &other) {
     case Datatype::Int128: return a.get().int128Value > (other.get()).int128Value;
     case Datatype::Float32: return a.get().float32Value > (other.get()).float32Value;
     case Datatype::Float64: return a.get().float64Value > (other.get()).float64Value;
-      case Datatype::Float128: return a.get().float128Value > (other.get()).float128Value;
-      case Datatype::Float256: return a.get().float256Value > (other.get()).float256Value;
+      case Datatype::DDReal: return a.get().ddrealValue > (other.get()).ddrealValue;
       case Datatype::Complex64: taco_ierror; return false;
     case Datatype::Complex128: taco_ierror; return false;
-      case Datatype::Complex256: taco_ierror; return false;
-      case Datatype::Complex512: taco_ierror; return false;
+      case Datatype::DDComplex: taco_ierror; return false;
     case Datatype::Undefined: taco_ierror; return false;
   }
   taco_unreachable;
@@ -542,13 +523,11 @@ bool operator==(const TypedComponentVal& a, const TypedComponentVal &other) {
     case Datatype::Int128: return a.get().int128Value == (other.get()).int128Value;
     case Datatype::Float32: return a.get().float32Value == (other.get()).float32Value;
     case Datatype::Float64: return a.get().float64Value == (other.get()).float64Value;
-      case Datatype::Float128: return a.get().float128Value == (other.get()).float128Value;
-      case Datatype::Float256: return a.get().float256Value == (other.get()).float256Value;
+      case Datatype::DDReal: return a.get().ddrealValue == (other.get()).ddrealValue;
 
     case Datatype::Complex64: taco_ierror; return false;
     case Datatype::Complex128: taco_ierror; return false;
-      case Datatype::Complex256: taco_ierror; return false;
-      case Datatype::Complex512: taco_ierror; return false;
+      case Datatype::DDComplex: taco_ierror; return false;
 
       case Datatype::Undefined: taco_ierror; return false;
   }
@@ -587,12 +566,10 @@ bool operator>(const TypedComponentVal& a, const int other) {
     case Datatype::Int128: return a.get().int128Value > other;
     case Datatype::Float32: return a.get().float32Value > other;
     case Datatype::Float64: return a.get().float64Value > other;
-      case Datatype::Float128: return a.get().float128Value > dd_real(other);
-      case Datatype::Float256: return a.get().float256Value > qd_real(other);
+      case Datatype::DDReal: return a.get().ddrealValue > ddreal(other);
       case Datatype::Complex64: taco_ierror; return false;
     case Datatype::Complex128: taco_ierror; return false;
-      case Datatype::Complex256: taco_ierror; return false;
-      case Datatype::Complex512: taco_ierror; return false;
+      case Datatype::DDComplex: taco_ierror; return false;
     case Datatype::Undefined: taco_ierror; return false;
   }
   taco_unreachable;
@@ -614,12 +591,10 @@ bool operator==(const TypedComponentVal& a, const int other) {
     case Datatype::Int128: return a.get().int128Value == other;
     case Datatype::Float32: return a.get().float32Value == other;
     case Datatype::Float64: return a.get().float64Value == other;
-      case Datatype::Float128: return a.get().float128Value == dd_real(other);
-      case Datatype::Float256: return a.get().float256Value == qd_real(other);
+      case Datatype::DDReal: return a.get().ddrealValue == ddreal(other);
     case Datatype::Complex64: taco_ierror; return false;
     case Datatype::Complex128: taco_ierror; return false;
-      case Datatype::Complex256: taco_ierror; return false;
-      case Datatype::Complex512: taco_ierror; return false;
+      case Datatype::DDComplex: taco_ierror; return false;
     case Datatype::Undefined: taco_ierror; return false;
   }
   taco_unreachable;

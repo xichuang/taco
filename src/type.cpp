@@ -37,11 +37,11 @@ bool Datatype::isInt() const {
 }
 
 bool Datatype::isFloat() const {
-  return getKind() == Float32 || getKind() == Float64 || getKind() == Float128 ||getKind() == Float256;
+  return getKind() == Float32 || getKind() == Float64 || getKind() == DDReal;
 }
 
 bool Datatype::isComplex() const {
-  return getKind() == Complex64 || getKind() == Complex128 || getKind() == Complex256 || getKind() == Complex512;
+  return getKind() == Complex64 || getKind() == Complex128 || getKind() == DDComplex;
 }
   
 Datatype max_type(Datatype a, Datatype b) {
@@ -94,13 +94,11 @@ int Datatype::getNumBits() const {
     case Complex128:
     case Int128:
     case UInt128:
-    case Float128:
       return 128;
-    case Float256:
-    case Complex256:
-      return 256;
-    case Complex512:
-      return 512;
+    case DDReal:
+      return ddbits;
+    case DDComplex:
+      return 2*ddbits;
 
     default:
       taco_ierror << "Bits for data type not set: " << getKind();
@@ -114,13 +112,11 @@ std::ostream& operator<<(std::ostream& os, const Datatype& type) {
   else if (type.isUInt()) os << "uint" << type.getNumBits() << "_t";
   else if (type == Datatype::Float32) os << "float";
   else if (type == Datatype::Float64) os << "double";
-  else if (type == Datatype::Float128) os << "dd_real";
-  else if (type == Datatype::Float256) os << "qd_real";
+  else if (type == Datatype::DDReal) os << ddstr;
 
   else if (type == Datatype::Complex64) os << "float complex";
   else if (type == Datatype::Complex128) os << "double complex";
-  else if (type == Datatype::Complex256) os << "dd_real complex";
-  else if (type == Datatype::Complex512) os << "qd_real complex";
+  else if (type == Datatype::DDComplex) os << ddstr+" complex";
 
   else os << "Undefined";
   return os;
@@ -141,12 +137,10 @@ std::ostream& operator<<(std::ostream& os, const Datatype::Kind& kind) {
     case Datatype::Int128: os << "Int128"; break;
     case Datatype::Float32: os << "Float32"; break;
     case Datatype::Float64: os << "Float64"; break;
-      case Datatype::Float128: os << "Float128"; break;
-      case Datatype::Float256: os << "Float256"; break;
+      case Datatype::DDReal: os << "DDReal"; break;
     case Datatype::Complex64: os << "Complex64"; break;
     case Datatype::Complex128: os << "Complex128"; break;
-      case Datatype::Complex256: os << "Complex256"; break;
-      case Datatype::Complex512: os << "Complex512"; break;
+      case Datatype::DDComplex: os << "DDComplex"; break;
     case Datatype::Undefined: os << "Undefined"; break;
   }
   return os;
@@ -204,8 +198,7 @@ Datatype Float(int bits) {
   switch (bits) {
     case 32: return Datatype(Datatype::Float32);
     case 64: return Datatype(Datatype::Float64);
-    case 128: return Datatype(Datatype::Float128);
-    case 256: return Datatype(Datatype::Float256);
+    case ddbits: return Datatype(Datatype::DDReal);
     default: 
       taco_ierror << bits << " bits not supported for datatype Float";
       return Datatype(Datatype::Float64);
@@ -214,16 +207,14 @@ Datatype Float(int bits) {
 
 Datatype Float32 = Datatype(Datatype::Float32);
 Datatype Float64 = Datatype(Datatype::Float64);
-Datatype Float128 = Datatype(Datatype::Float128);
-Datatype Float256 = Datatype(Datatype::Float256);
+Datatype DDReal = Datatype(Datatype::DDReal);
 
 Datatype Complex(int bits) {
   switch (bits) {
     case 64: return Datatype(Datatype::Complex64);
     case 128: return Datatype(Datatype::Complex128);
-    case 256: return Datatype(Datatype::Complex256);
-    case 512: return Datatype(Datatype::Complex512);
-    default: 
+    case 2*ddbits: return Datatype(Datatype::DDComplex);
+    default:
       taco_ierror << bits << " bits not supported for datatype Complex";
       return Datatype(Datatype::Complex128);
   }
@@ -231,8 +222,7 @@ Datatype Complex(int bits) {
   
 Datatype Complex64  = Datatype(Datatype::Complex64);
 Datatype Complex128 = Datatype(Datatype::Complex128);
-Datatype Complex256 = Datatype(Datatype::Complex256);
-Datatype Complex512 = Datatype(Datatype::Complex512);
+Datatype DDComplex = Datatype(Datatype::DDComplex);
 
 // class Dimension
 Dimension::Dimension() : size(0) {

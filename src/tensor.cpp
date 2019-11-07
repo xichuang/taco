@@ -615,15 +615,9 @@ bool isZero(T a) {
   }
   return false;
 }
-
-    bool isZero(dd_real a) {
-        if ( a == dd_real(0)) {
-            return true;
-        }
-        return false;
-    }
-    bool isZero(qd_real a) {
-        if ( a == qd_real(0)) {
+    template<>
+    bool isZero(ddreal a) {
+        if ( a == ddreal("0")) {
             return true;
         }
         return false;
@@ -636,14 +630,9 @@ bool isZero(std::complex<T> a) {
   }
   return false;
 }
-    bool isZero(std::complex<dd_real> a) {
-        if (a.real() == dd_real(0) && a.imag() == dd_real(0)) {
-            return true;
-        }
-        return false;
-    }
-    bool isZero(std::complex<qd_real> a) {
-        if (a.real() == qd_real(0) && a.imag() == qd_real(0)) {
+    template<>
+    bool isZero(std::complex<ddreal> a) {
+        if (a.real() == ddreal("0") && a.imag() == ddreal("0")) {
             return true;
         }
         return false;
@@ -657,18 +646,10 @@ bool scalarEquals(T a, T b) {
   }
   return true;
 }
-
-    bool scalarEquals(dd_real a, dd_real b) {
-        dd_real diff = ( a -  b)/a;
-        if (abs(diff) > dd_real(10e-16)) {
-            return false;
-        }
-        return true;
-    }
-
-    bool scalarEquals(qd_real a, qd_real b) {
-        qd_real diff = ( a -  b)/a;
-        if (abs(diff) > qd_real(10e-30)) {
+    template<>
+    bool scalarEquals(ddreal a, ddreal b) {
+        ddreal diff = ( a -  b)/a;
+        if (abs(diff) > ddthresh) {
             return false;
         }
         return true;
@@ -682,16 +663,10 @@ bool scalarEquals(std::complex<T> a, std::complex<T> b) {
   }
   return true;
 }
-    bool scalarEquals(std::complex<dd_real> a, std::complex<dd_real> b) {
-        dd_real diff = abs((a - b)/a);
-        if ((diff > dd_real(10e-16)) || (diff < -dd_real(10e-16))) {
-            return false;
-        }
-        return true;
-    }
-    bool scalarEquals(std::complex<qd_real> a, std::complex<qd_real> b) {
-        qd_real diff = abs((a - b)/a);
-        if ((diff > qd_real(10e-16)) || (diff < -qd_real(10e-16))) {
+    template<>
+    bool scalarEquals(std::complex<ddreal> a, std::complex<ddreal> b) {
+        ddreal diff = abs((a - b)/a);
+        if ((diff > ddthresh) || (diff < -ddthresh)) {
             return false;
         }
         return true;
@@ -779,13 +754,11 @@ bool equals(const TensorBase& a, const TensorBase& b) {
     case Datatype::Int128: return equalsTyped<long long>(a, b);
     case Datatype::Float32: return equalsTyped<float>(a, b);
     case Datatype::Float64: return equalsTyped<double>(a, b);
-      case Datatype::Float128: return equalsTyped<dd_real>(a, b);
-      case Datatype::Float256: return equalsTyped<qd_real>(a, b);
+      case Datatype::DDReal: return equalsTyped<ddreal>(a, b);
 
       case Datatype::Complex64: return equalsTyped<std::complex<float>>(a, b);
     case Datatype::Complex128: return equalsTyped<std::complex<double>>(a, b);
-      case Datatype::Complex256: return equalsTyped<std::complex<dd_real>>(a, b);
-      case Datatype::Complex512: return equalsTyped<std::complex<qd_real>>(a, b);
+      case Datatype::DDComplex: return equalsTyped<std::complex<ddreal>>(a, b);
 
       case Datatype::Undefined: taco_ierror << "Undefined data type";
   }
@@ -844,13 +817,11 @@ ostream& operator<<(ostream& os, const TensorBase& tensor) {
       case Datatype::Int128: os << ((long long*)(ptr+tensor.getOrder()))[0] << std::endl; break;
       case Datatype::Float32: os << ((float*)(ptr+tensor.getOrder()))[0] << std::endl; break;
       case Datatype::Float64: os << ((double*)(ptr+tensor.getOrder()))[0] << std::endl; break;
-        case Datatype::Float128: os << ((dd_real*)(ptr+tensor.getOrder()))[0] << std::endl; break;
-        case Datatype::Float256: os << ((qd_real*)(ptr+tensor.getOrder()))[0] << std::endl; break;
+        case Datatype::DDReal: os << ((ddreal*)(ptr+tensor.getOrder()))[0] << std::endl; break;
 
         case Datatype::Complex64: os << ((std::complex<float>*)(ptr+tensor.getOrder()))[0] << std::endl; break;
       case Datatype::Complex128: os << ((std::complex<double>*)(ptr+tensor.getOrder()))[0] << std::endl; break;
-        case Datatype::Complex256: os << ((std::complex<dd_real>*)(ptr+tensor.getOrder()))[0] << std::endl; break;
-        case Datatype::Complex512: os << ((std::complex<qd_real>*)(ptr+tensor.getOrder()))[0] << std::endl; break;
+        case Datatype::DDComplex: os << ((std::complex<ddreal>*)(ptr+tensor.getOrder()))[0] << std::endl; break;
 
       case Datatype::Undefined: taco_ierror; break;
     }

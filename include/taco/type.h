@@ -12,6 +12,11 @@
 
 namespace taco {
 
+    typedef dd_real ddreal;
+    const std::string ddstr = "dd_real";
+    const int ddbits = sizeof(ddreal)*8;
+    const ddreal ddthresh = ddreal(10e-30);
+
 /// A basic taco type. These can be boolean, integer, unsigned integer, float
 /// or complex float at different precisions.
 class Datatype {
@@ -31,12 +36,10 @@ public:
     Int128,
     Float32,
     Float64,
-    Float128,
-    Float256,
+    DDReal,
     Complex64,
     Complex128,
-    Complex256,
-    Complex512,
+    DDComplex,
     Undefined  /// Undefined type
   };
 
@@ -89,13 +92,11 @@ extern Datatype Int128;
 Datatype Float(int bits = sizeof(double)*8);
 extern Datatype Float32;
 extern Datatype Float64;
-extern Datatype Float128;
-extern Datatype Float256;
+extern Datatype DDReal;
 Datatype Complex(int bits);
 extern Datatype Complex64;
 extern Datatype Complex128;
-extern Datatype Complex256;
-extern Datatype Complex512;
+extern Datatype DDComplex;
 
 Datatype max_type(Datatype a, Datatype b);
 
@@ -159,12 +160,8 @@ template<> inline Datatype type<float>() {
 template<> inline Datatype type<double>() {
   return Float64;
 }
-template<> inline Datatype type<dd_real>() {
-  return Float128;
-}
-
-template<> inline Datatype type<qd_real>() {
-  return Float256;
+template<> inline Datatype type<ddreal>() {
+  return DDReal;
 }
 
 template<> inline Datatype type<std::complex<float>>() {
@@ -174,12 +171,10 @@ template<> inline Datatype type<std::complex<float>>() {
 template<> inline Datatype type<std::complex<double>>() {
   return Complex128;
 }
-    template<> inline Datatype type<std::complex<dd_real>>() {
-        return Complex256;
+    template<> inline Datatype type<std::complex<ddreal>>() {
+        return DDComplex;
     }
-    template<> inline Datatype type<std::complex<qd_real>>() {
-        return Complex512;
-    }
+
 
 /// A union storing all of the different types that a component can take.
 union ComponentTypeUnion {
@@ -199,13 +194,11 @@ union ComponentTypeUnion {
 
   float float32Value;
   double float64Value;
-    dd_real float128Value;
-    qd_real float256Value;
+  ddreal ddrealValue;
 
   std::complex<float> complex64Value;
   std::complex<double> complex128Value;
-    std::complex<dd_real> complex256Value;
-    std::complex<qd_real> complex512Value;
+    std::complex<ddreal> ddcomplexValue;
 
     ComponentTypeUnion() {int32Value = 0;}
 };

@@ -166,12 +166,10 @@ public:
   Expr(uint64_t);
   Expr(float);
   Expr(double);
-  Expr(dd_real);
-  Expr(qd_real);
+  Expr(ddreal);
   Expr(std::complex<float>);
   Expr(std::complex<double>);
-  Expr(std::complex<dd_real>);
-  Expr(std::complex<qd_real>);
+  Expr(std::complex<ddreal>);
 
   Expr(const BaseExprNode *expr) : IRHandle(expr) {}
 
@@ -245,8 +243,8 @@ struct Literal : public ExprNode<Literal> {
   bool getBoolValue() const;
   int64_t getIntValue() const;
   uint64_t getUIntValue() const;
-  qd_real getFloatValue() const;
-  std::complex<qd_real> getComplexValue() const;
+  ddreal getFloatValue() const;
+  std::complex<ddreal> getComplexValue() const;
 
   static const IRNodeType _type_info = IRNodeType::Literal;
 

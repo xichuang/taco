@@ -73,11 +73,8 @@ struct Array::Content : util::Uncopyable {
           case Datatype::Float64:
             delete[] ((double*)data);
             break;
-            case Datatype::Float128:
-                delete[] ((dd_real*)data);
-                break;
-            case Datatype::Float256:
-                delete[] ((qd_real*)data);
+            case Datatype::DDReal:
+                delete[] ((ddreal*)data);
                 break;
           case Datatype::Complex64:
             delete[] ((std::complex<float>*)data);
@@ -85,11 +82,8 @@ struct Array::Content : util::Uncopyable {
           case Datatype::Complex128:
             delete[] ((std::complex<double>*)data);
             break;
-            case Datatype::Complex256:
-                delete[] ((std::complex<dd_real>*)data);
-                break;
-            case Datatype::Complex512:
-                delete[] ((std::complex<qd_real>*)data);
+            case Datatype::DDComplex:
+                delete[] ((std::complex<ddreal>*)data);
                 break;
           case Datatype::Undefined:
             taco_ierror;
@@ -193,11 +187,8 @@ std::ostream& operator<<(std::ostream& os, const Array& array) {
     case Datatype::Float64:
       printData<double>(os, array);
       break;
-      case Datatype::Float128:
-          printData<dd_real>(os, array);
-          break;
-      case Datatype::Float256:
-          printData<qd_real>(os, array);
+      case Datatype::DDReal:
+          printData<ddreal>(os, array);
           break;
     case Datatype::Complex64:
       printData<std::complex<float>>(os, array);
@@ -205,11 +196,8 @@ std::ostream& operator<<(std::ostream& os, const Array& array) {
     case Datatype::Complex128:
       printData<std::complex<double>>(os, array);
       break;
-      case Datatype::Complex256:
-          printData<std::complex<dd_real>>(os, array);
-          break;
-      case Datatype::Complex512:
-          printData<std::complex<qd_real>>(os, array);
+      case Datatype::DDComplex:
+          printData<std::complex<ddreal>>(os, array);
           break;
     case Datatype::Undefined:
       os << "[]";
