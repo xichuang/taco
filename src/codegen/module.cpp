@@ -131,7 +131,7 @@ string Module::compile() {
   else {
     cc = util::getFromEnv(target.compiler_env, target.compiler);
     cflags = util::getFromEnv("TACO_CFLAGS",
-    "-O3 -ffast-math -std=c++11") + " -shared -fPIC";
+    "-O2 -std=c++11") + " -shared -fPIC";
     file_ending = ".cpp";
     shims_file = "";
   }
@@ -143,7 +143,7 @@ string Module::compile() {
 
   string cmd = cc + " " + cflags + " " +
     prefix + file_ending + " " + shims_file + " " + 
-    "-o " + fullpath + " -lm";
+    "-o " + fullpath + " -lqd -lm";
 
   // open the output file & write out the source
   compileToSource(tmpdir, libname);

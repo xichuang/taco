@@ -19,12 +19,17 @@ int main(int argc, char* argv[]) {
     Tensor<dd_real> B({3,2}, csf);
     Tensor<dd_real> c({2},     sv);
 
+    dd_real a="1.00210000000000002100000000000000000000000000001";
+    dd_real b="4.00000320000000000560000000000000000000000000000001";
+
     // Insert data into B and c
-    B.insert({0,0}, dd_real("1.00210000000000002100000000000000000000000000001"));
+    B.insert({0,0}, a);
     B.insert({1,0}, dd_real("2.00210000000000003100000000000000000000000000001"));
     B.insert({2,1}, dd_real("3.00042000000000022000000000000000000000000000001"));
-    c.insert({0}, dd_real("4.00000320000000000560000000000000000000000000000001"));
+    c.insert({0}, b);
     c.insert({1}, dd_real("5.00000430000000000003300000000000000000000000000001"));
+
+    std::cout<<std::setprecision(32)<<a*b<<std::endl;
 
     // Pack data as described by the formats
     B.pack();
@@ -44,6 +49,10 @@ int main(int argc, char* argv[]) {
     A.compute();
 
     std::cout <<std::setprecision(32)<< A << std::endl;
+    // Exact results:
+    // 4.0084032067200000896118272000000001176000000000
+    // 8.0084064067200001352118592000000001736000000000
+    // 15.0021129018060011000999598600000000072600000001
 
     fpu_fix_end(&oldcw);
     return 0;
