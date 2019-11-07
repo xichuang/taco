@@ -486,12 +486,20 @@ Literal::Literal(float val) : Literal(new LiteralNode(val)) {
 
 Literal::Literal(double val) : Literal(new LiteralNode(val)) {
 }
+    Literal::Literal(dd_real val) : Literal(new LiteralNode(val)) {
+    }
+    Literal::Literal(qd_real val) : Literal(new LiteralNode(val)) {
+    }
 
 Literal::Literal(std::complex<float> val) : Literal(new LiteralNode(val)) {
 }
 
 Literal::Literal(std::complex<double> val) : Literal(new LiteralNode(val)) {
 }
+    Literal::Literal(std::complex<dd_real> val) : Literal(new LiteralNode(val)) {
+    }
+    Literal::Literal(std::complex<qd_real> val) : Literal(new LiteralNode(val)) {
+    }
 
 IndexExpr Literal::zero(Datatype type) {
   switch (type.getKind()) {
@@ -506,9 +514,14 @@ IndexExpr Literal::zero(Datatype type) {
     case Datatype::Int64:       return Literal(int64_t(0));
     case Datatype::Float32:     return Literal(float(0.0));
     case Datatype::Float64:     return Literal(double(0.0));
-    case Datatype::Complex64:   return Literal(std::complex<float>());
-    case Datatype::Complex128:  return Literal(std::complex<double>());
-    default:                    taco_ierror << "unsupported type";
+      case Datatype::Float128:     return Literal(dd_real(0));
+      case Datatype::Float256:     return Literal(qd_real(0));
+    case Datatype::Complex64:   return Literal(std::complex<float>(0));
+    case Datatype::Complex128:  return Literal(std::complex<double>(0));
+      case Datatype::Complex256:  return Literal(std::complex<dd_real>(0));
+      case Datatype::Complex512:  return Literal(std::complex<qd_real>(0));
+
+      default:                    taco_ierror << "unsupported type";
   };
 
   return IndexExpr();
@@ -531,8 +544,14 @@ template long long Literal::getVal() const;
 template int8_t Literal::getVal() const;
 template float Literal::getVal() const;
 template double Literal::getVal() const;
+    template dd_real Literal::getVal() const;
+    template qd_real Literal::getVal() const;
+
 template std::complex<float> Literal::getVal() const;
 template std::complex<double> Literal::getVal() const;
+    template std::complex<dd_real> Literal::getVal() const;
+    template std::complex<qd_real> Literal::getVal() const;
+
 
 template <> bool isa<Literal>(IndexExpr e) {
   return isa<LiteralNode>(e.ptr);

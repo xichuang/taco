@@ -33,6 +33,8 @@ const string cHeaders =
   "#include <stdbool.h>\n"
   "#include <math.h>\n"
   "#include <complex.h>\n"
+  "#include <qd/dd_real.h>\n"
+  "#include <qd/qd_real.h>\n"
   "#include <string.h>\n"
   "#define TACO_MIN(_a,_b) ((_a) < (_b) ? (_a) : (_b))\n"
   "#define TACO_MAX(_a,_b) ((_a) > (_b) ? (_a) : (_b))\n"
@@ -423,9 +425,16 @@ void CodeGen_C::visit(const Sqrt* op) {
   
 void CodeGen_C::generateShim(const Stmt& func, stringstream &ret) {
   const Function *funcPtr = func.as<Function>();
-  
-  ret << "int _shim_" << funcPtr->name << "(void** parameterPack) {\n";
-  ret << "  return " << funcPtr->name << "(";
+    ret<< "#ifdef __cplusplus\n";
+    ret << "extern \"C\" {\n";
+    ret << "#endif\n";
+    ret << "  int _shim_" << funcPtr->name << "(void** parameterPack);\n";
+    ret<< "#ifdef __cplusplus\n";
+    ret << "}\n";
+    ret << "#endif\n";
+
+    ret << "int _shim_" << funcPtr->name << "(void** parameterPack) {\n";
+    ret << "  return " << funcPtr->name << "(";
 
   size_t i=0;
   string delimiter = "";

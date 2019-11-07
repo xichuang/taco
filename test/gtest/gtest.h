@@ -9882,7 +9882,7 @@ class TypeWithoutFormatter<T, kConvertibleToInteger> {
 // we define it to take an std::ostream instead, we'll get an
 // "ambiguous overloads" compiler error when trying to print a type
 // Foo that supports streaming to std::basic_ostream<Char,
-// CharTraits>, as the compiler cannot tell whether
+// Charaits>, as the compiler cannot tell whether
 // operator<<(std::ostream&, const T&) or
 // operator<<(std::basic_stream<Char, CharTraits>, const Foo&) is more
 // specific.

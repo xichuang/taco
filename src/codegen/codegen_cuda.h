@@ -70,7 +70,7 @@ protected:
   class DeviceFunctionCollector;
 
 private:
-  virtual std::string restrictKeyword() const { return "__restrict__"; }
+  virtual std::string restrictKeyword() const { return " "; }
 };
 
 } // namespace ir

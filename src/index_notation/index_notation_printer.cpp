@@ -66,12 +66,24 @@ void IndexNotationPrinter::visit(const LiteralNode* op) {
     case Datatype::Float64:
       os << op->getVal<double>();
       break;
+      case Datatype::Float128:
+          os << op->getVal<dd_real>();
+          break;
+      case Datatype::Float256:
+          os << op->getVal<qd_real>();
+          break;
     case Datatype::Complex64:
       os << op->getVal<std::complex<float>>();
       break;
     case Datatype::Complex128:
       os << op->getVal<std::complex<double>>();
       break;
+      case Datatype::Complex256:
+          os << op->getVal<std::complex<dd_real>>();
+          break;
+      case Datatype::Complex512:
+          os << op->getVal<std::complex<qd_real>>();
+          break;
     case Datatype::Undefined:
       break;
   }

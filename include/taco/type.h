@@ -7,6 +7,8 @@
 #include <initializer_list>
 #include "taco/error.h"
 #include <complex>
+#include "qd/dd_real.h"
+#include "qd/qd_real.h"
 
 namespace taco {
 
@@ -29,8 +31,12 @@ public:
     Int128,
     Float32,
     Float64,
+    Float128,
+    Float256,
     Complex64,
     Complex128,
+    Complex256,
+    Complex512,
     Undefined  /// Undefined type
   };
 
@@ -83,9 +89,13 @@ extern Datatype Int128;
 Datatype Float(int bits = sizeof(double)*8);
 extern Datatype Float32;
 extern Datatype Float64;
+extern Datatype Float128;
+extern Datatype Float256;
 Datatype Complex(int bits);
 extern Datatype Complex64;
 extern Datatype Complex128;
+extern Datatype Complex256;
+extern Datatype Complex512;
 
 Datatype max_type(Datatype a, Datatype b);
 
@@ -149,6 +159,13 @@ template<> inline Datatype type<float>() {
 template<> inline Datatype type<double>() {
   return Float64;
 }
+template<> inline Datatype type<dd_real>() {
+  return Float128;
+}
+
+template<> inline Datatype type<qd_real>() {
+  return Float256;
+}
 
 template<> inline Datatype type<std::complex<float>>() {
   return Complex64;
@@ -157,6 +174,12 @@ template<> inline Datatype type<std::complex<float>>() {
 template<> inline Datatype type<std::complex<double>>() {
   return Complex128;
 }
+    template<> inline Datatype type<std::complex<dd_real>>() {
+        return Complex256;
+    }
+    template<> inline Datatype type<std::complex<qd_real>>() {
+        return Complex512;
+    }
 
 /// A union storing all of the different types that a component can take.
 union ComponentTypeUnion {
@@ -176,10 +199,15 @@ union ComponentTypeUnion {
 
   float float32Value;
   double float64Value;
+    dd_real float128Value;
+    qd_real float256Value;
 
   std::complex<float> complex64Value;
   std::complex<double> complex128Value;
-  ComponentTypeUnion() {int32Value = 0;}
+    std::complex<dd_real> complex256Value;
+    std::complex<qd_real> complex512Value;
+
+    ComponentTypeUnion() {int32Value = 0;}
 };
 
 /// A union storing all of the different types that an index can take.

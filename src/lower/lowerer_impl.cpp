@@ -740,10 +740,18 @@ Expr LowererImpl::lowerLiteral(Literal literal) {
       return ir::Literal::make(literal.getVal<float>());
     case Datatype::Float64:
       return ir::Literal::make(literal.getVal<double>());
+      case Datatype::Float128:
+          return ir::Literal::make(literal.getVal<dd_real>());
+      case Datatype::Float256:
+          return ir::Literal::make(literal.getVal<qd_real>());
     case Datatype::Complex64:
       return ir::Literal::make(literal.getVal<std::complex<float>>());
     case Datatype::Complex128:
       return ir::Literal::make(literal.getVal<std::complex<double>>());
+      case Datatype::Complex256:
+          return ir::Literal::make(literal.getVal<std::complex<dd_real>>());
+      case Datatype::Complex512:
+          return ir::Literal::make(literal.getVal<std::complex<qd_real>>());
     case Datatype::Undefined:
       taco_unreachable;
       break;

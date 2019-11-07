@@ -358,8 +358,14 @@ int main(int argc, char* argv[]) {
       else if(typesString == "longlong") dataType = type<long long>();
       else if(typesString == "float") dataType = Float32;
       else if(typesString == "double") dataType = Float64;
+      else if(typesString == "dd_real") dataType = Float128;
+      else if(typesString == "qd_real") dataType = Float256;
+
       else if(typesString == "complexfloat") dataType = Complex64;
       else if(typesString == "complexdouble") dataType = Complex128;
+      else if(typesString == "dd_real complex") dataType = Complex256;
+      else if(typesString == "qd_real complex") dataType = Complex512;
+
       else return reportError("Incorrect format descriptor", 3);
       dataTypes.insert({tensorName, dataType});
     }

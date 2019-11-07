@@ -17,7 +17,7 @@ struct Target {
 
   std::string compiler_env = "TACO_CC";
 
-  std::string compiler = "cc";
+  std::string compiler = "c++";
   
   // As we support them, we'll stick in optional features into the target as
   // well, including things like parallelism model (e.g. openmp, cilk) for

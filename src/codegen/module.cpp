@@ -71,7 +71,7 @@ void Module::compileToSource(string path, string prefix) {
   }
 
   ofstream source_file;
-  string file_ending = should_use_CUDA_codegen() ? ".cu" : ".c";
+  string file_ending = should_use_CUDA_codegen() ? ".cu" : ".cpp";
   source_file.open(path+prefix+file_ending);
   source_file << source.str();
   source_file.close();
@@ -104,7 +104,7 @@ void writeShims(vector<Stmt> funcs, string path, string prefix) {
     shims_file.open(path+prefix+"_shims.cpp");
   }
   else {
-    shims_file.open(path+prefix+".c", ios::app);
+    shims_file.open(path+prefix+".cpp", ios::app);
   }
   shims_file << "#include \"" << path << prefix << ".h\"\n";
   shims_file << shims.str();
@@ -131,14 +131,16 @@ string Module::compile() {
   else {
     cc = util::getFromEnv(target.compiler_env, target.compiler);
     cflags = util::getFromEnv("TACO_CFLAGS",
-    "-O3 -ffast-math -std=c99") + " -shared -fPIC";
-    file_ending = ".c";
+    "-O3 -ffast-math -std=c++11") + " -shared -fPIC";
+    file_ending = ".cpp";
     shims_file = "";
   }
 #if USE_OPENMP
   cflags += " -fopenmp";
 #endif
-  
+
+  cflags += " -I/home/xich/local/include -L/home/xich/local/lib";
+
   string cmd = cc + " " + cflags + " " +
     prefix + file_ending + " " + shims_file + " " + 
     "-o " + fullpath + " -lm";

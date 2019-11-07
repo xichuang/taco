@@ -57,7 +57,7 @@ protected:
   CodeGenType codeGenType;
 
 private:
-  virtual std::string restrictKeyword() const { return ""; }
+  virtual std::string restrictKeyword() const { return " "; }
 
 
   std::string unpackTensorProperty(std::string varname, const GetProperty* op,

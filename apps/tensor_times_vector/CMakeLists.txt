@@ -16,7 +16,7 @@ if (NOT TACO_INCLUDE_DIR)
   target_link_libraries(${PROJECT_NAME} LINK_PUBLIC ${taco})
 else()
   set_target_properties("${PROJECT_NAME}" PROPERTIES OUTPUT_NAME "taco-${PROJECT_NAME}")
-  target_link_libraries(${PROJECT_NAME} LINK_PUBLIC taco)
+  target_link_libraries(${PROJECT_NAME} LINK_PUBLIC taco qd)
 endif ()
 
 # Include taco headers

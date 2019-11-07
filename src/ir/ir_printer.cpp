@@ -101,6 +101,14 @@ void IRPrinter::visit(const Literal* op) {
       stream << ((op->getValue<double>()!=0.0)
                  ? util::toString(op->getValue<double>()) : "0.0");
     break;
+      case Datatype::Float128:
+          stream << ((op->getValue<dd_real>()!=dd_real(0.0))
+                     ? util::toString(op->getValue<dd_real>()) : "0.0");
+          break;
+      case Datatype::Float256:
+          stream << ((op->getValue<dd_real>()!=dd_real(0.0))
+                     ? util::toString(op->getValue<dd_real>()) : "0.0");
+          break;
     case Datatype::Complex64: {
       std::complex<float> val = op->getValue<std::complex<float>>();
       stream << val.real() << " + I*" << val.imag();
@@ -111,6 +119,16 @@ void IRPrinter::visit(const Literal* op) {
       stream << val.real() << " + I*" << val.imag();
     }
     break;
+      case Datatype::Complex256: {
+          std::complex<dd_real> val = op->getValue<std::complex<dd_real>>();
+          stream << val.real() << " + I*" << val.imag();
+      }
+          break;
+      case Datatype::Complex512: {
+          std::complex<qd_real> val = op->getValue<std::complex<qd_real>>();
+          stream << val.real() << " + I*" << val.imag();
+      }
+          break;
     case Datatype::Undefined:
       taco_ierror << "Undefined type in IR";
     break;
@@ -448,7 +466,7 @@ void IRPrinter::visit(const VarDecl* op) {
   stream << keywordString(util::toString(op->var.type()));
   taco_iassert(isa<Var>(op->var));
   if (to<Var>(op->var)->is_ptr) {
-    stream << "* restrict";
+    stream << "* ";
   }
   stream << " ";
   string varName = varNameGenerator.getUniqueName(util::toString(op->var));

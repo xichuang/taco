@@ -25,8 +25,12 @@ size_t TypedIndex::getAsIndex(const IndexTypeUnion& mem) const {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror; return 0;
   }
   taco_unreachable;
@@ -48,8 +52,12 @@ void TypedIndex::set(IndexTypeUnion& mem, const IndexTypeUnion& value) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror;
   }
 }
@@ -69,8 +77,12 @@ void TypedIndex::setInt(IndexTypeUnion& mem, const int value) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror;
   }
 }
@@ -90,8 +102,12 @@ void TypedIndex::add(IndexTypeUnion& result, const IndexTypeUnion& a, const Inde
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror;
   }
 }
@@ -111,8 +127,12 @@ void TypedIndex::addInt(IndexTypeUnion& result, const IndexTypeUnion& a, const i
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror;
   }
 }
@@ -132,8 +152,12 @@ void TypedIndex::multiply(IndexTypeUnion& result, const IndexTypeUnion& a, const
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror;
   }
 }
@@ -153,8 +177,12 @@ void TypedIndex::multiplyInt(IndexTypeUnion& result, const IndexTypeUnion& a, co
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror;
   }
 }
@@ -216,8 +244,12 @@ void TypedIndexVal::set(TypedComponentVal value) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror; return;  }
 }
 
@@ -237,8 +269,12 @@ void TypedIndexVal::set(TypedComponentRef value) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror; return;  }
 }
 
@@ -428,8 +464,12 @@ bool operator>(const TypedIndexVal& a, const TypedIndexVal &other) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror; return false;
   }
   taco_unreachable;
@@ -452,8 +492,12 @@ bool operator==(const TypedIndexVal& a, const TypedIndexVal &other) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror; return false;
   }
   taco_unreachable;
@@ -491,8 +535,12 @@ bool operator>(const TypedIndexVal& a, const int other) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror; return false;
   }
   taco_unreachable;
@@ -514,8 +562,12 @@ bool operator==(const TypedIndexVal& a, const int other) {
     case Datatype::Int128:
     case Datatype::Float32:
     case Datatype::Float64:
+    case Datatype::Float128:
+    case Datatype::Float256:
     case Datatype::Complex64:
     case Datatype::Complex128:
+    case Datatype::Complex256:
+    case Datatype::Complex512:
     case Datatype::Undefined: taco_ierror; return false;
   }
   taco_unreachable;
