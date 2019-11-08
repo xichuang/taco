@@ -54,7 +54,7 @@ protected:
   class FindVars;
 
 private:
-  virtual std::string restrictKeyword() const { return " "; }
+  virtual std::string restrictKeyword() const { return ""; }
 };
 
 } // namespace ir

@@ -19,6 +19,12 @@ int main(int argc, char* argv[]) {
     Tensor<dd_real> B({3,2}, csf);
     Tensor<dd_real> c({2},     sv);
 
+    double t1=479876442.000000000;
+    std::cout <<std::setprecision(32)<< t1 <<"  "<<dd_real(t1)<< std::endl;
+    double t2=3.0000001;
+    std::cout <<std::setprecision(32)<< t2 <<"  "<<1*t2<<"  "<<dd_real(t2)<< std::endl;
+
+
     dd_real a="1.00210000000000002100000000000000000000000000001";
     dd_real b="4.00000320000000000560000000000000000000000000000001";
 
